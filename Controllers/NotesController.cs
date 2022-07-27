@@ -36,6 +36,38 @@ namespace MedicalNotes.Controllers
             return Ok(response);
         }
 
+        [HttpGet("{Id}")]
+        public IActionResult GetNote(int Id)
+        {
+            ResponseDTO response = new ResponseDTO();
+            
+            try
+            {
+                using (MedicalNotesContext db = new MedicalNotesContext())
+                {
+                    Note nota = db.Notes.Find(Id);
+                    if (nota == null)
+                    {
+                        response.Success = false;
+                        response.Data = null;
+                        response.Message = "Not Found";
+                    }
+                    else
+                    {
+                        response.Success = true;
+                        response.Data = nota;
+                        response.Message = "Success!";
+                    }    
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Data = ex;
+                response.Message = ex.Message;
+            }
+            return Ok(response);
+        }
 
         [HttpPost]
         public IActionResult AddNotes(RequestDTO request)
@@ -69,7 +101,75 @@ namespace MedicalNotes.Controllers
             return Ok(response);
         }
 
+
+
+        [HttpPut]
+        public IActionResult EditNotes(RequestDTO request)
+        {
+            ResponseDTO response = new ResponseDTO();
+            try
+            {
+                using (MedicalNotesContext db = new MedicalNotesContext())
+                {
+                    Note nota = db.Notes.Find(request.Id);
+                    if (nota == null)
+                    {
+                        response.Success = false;
+                        response.Data = null;
+                        response.Message = "Not Found";
+                    }
+                    else
+                    {
+                        nota.Diagnosis = request.Diagnosis;
+                        nota.Date = request.Date;
+                        nota.Reminder = request.Reminder;
+                        nota.DoctorName = request.DoctorName;
+                        nota.DoctorInfo = request.DoctorInfo;
+                        nota.Recipe = request.Recipe;
+
+                        db.Entry(nota).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                        db.SaveChanges();
+
+                        response.Success = true;
+                        response.Message = "Success!";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Data = ex;
+                response.Message = ex.Message;
+            }
+            return Ok(response);
+
+        }
+
+        [HttpDelete("{Id}")]
+        public IActionResult DeleteNotes(int Id)
+        {
+            ResponseDTO response = new ResponseDTO();
+            try
+            {
+                using (MedicalNotesContext db = new MedicalNotesContext())
+                {
+                    Note nota = db.Notes.Find(Id);
+                    
+                        db.Remove(nota);
+                        db.SaveChanges();
+                                    
+                }
+                response.Success = true;
+                response.Message = "Success!";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Data = ex;
+                response.Message = ex.Message;
+            }
+            return Ok(response);
+        }
     }
 }
 
-                        
