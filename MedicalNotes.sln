@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalNotes.REST.API", "MedicalNotes.REST.API.csproj", "{015F0F3D-2AFA-4852-829A-606CE652D952}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalNotes.REST.API", "MedicalNotes.REST.API/MedicalNotes.REST.API.csproj", "{015F0F3D-2AFA-4852-829A-606CE652D952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
