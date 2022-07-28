@@ -1,0 +1,62 @@
+﻿@page "/Notes"
+@using System.Collections.Generic
+@using System.Net.Http
+@using System.Net.Http.Json
+@using MedicalNotes.Blazor.Data
+@*@using MedicalNotesDTO*@
+@inject HttpClient Http
+
+<h3>Notes</h3>
+
+<div class="row">
+    <div class="col-12 text-right">
+        <a href="NoteForm"> New Note </a>
+    </div>
+</div>
+
+<table class="table">
+
+    <tr>
+                <th class="container">Id</th>   
+                <th class="container">Date</th>
+                <th class="container">Reminder</th>
+                <th class="container">DoctorName</th>
+                <th class="container">DoctorInfo</th>
+                <th class="container">Diagnosis</th>
+                <th class="container">Recipe</th>
+    </tr>
+</table>
+
+<table class="table">
+
+@if (response != null && response.Data != null)
+    {
+        @foreach (Notes element in response.Data )
+        {
+            <tr>
+                <td>(@element).Id</td>
+                <td>(@element).Date</td>
+                <td>(@element).Reminder</td>
+                <td>(@element).DoctorName</td>
+                <td>(@element).DoctorInfo</td>
+                <td>(@element).Diagnosis</td>
+                <td>(@element).Recipe</td>  
+                <td>
+                <a href="/NoteForm/(@element).Id">Edit</a>
+                <a href="/DeleteNote/(@element).Id">Delete</a>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+@code {
+    public string Url = "https://localhost:44369/api/notes";
+    public Data.Response<List<Notes>> response = new Data.Response<List<Notes>>();
+
+
+    protected override async Task OnInitializedAsync() =>
+       response = await Http.GetFromJsonAsync<Data.Response<List<Notes>>>(Url);
+
+
+}

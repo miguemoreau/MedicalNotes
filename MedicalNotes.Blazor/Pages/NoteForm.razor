@@ -1,0 +1,87 @@
+﻿@page "/NoteForm"
+@page "/NoteForm/{Id:int}"
+<h3>NoteForm</h3>
+
+
+@using System.Collections.Generic
+@using Data
+@using System.Net.Http
+@using System.Net.Http.Json
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<EditForm Model="@note">
+    <div class="container-fluid">
+
+        <div class="form-group row mb-1">
+            <label class="col-sm-3">DoctorName</label>
+            <div class="col-sm-9">
+                <InputText class="form-control" @bind-Value="note.DoctorName"></InputText>
+            </div>
+        </div>
+
+        <div class="form-group row mb-1">   
+            <label class="col-sm-3">DoctorInfo</label>
+            <div class="col-sm-9">
+                <InputText class="form-control" @bind-Value="note.DoctorInfo"></InputText>
+            </div>
+        </div>
+
+        <div class="form-group row mb-1">   
+            <label class="col-sm-3">Diagnosis</label>
+            <div class="col-sm-9">
+                <InputText class="form-control" @bind-Value="note.Diagnosis"></InputText>
+            </div>
+        </div>
+        <div class="form-group row mb-1">   
+            <label class="col-sm-3">Recipe</label>
+            <div class="col-sm-9">
+                <InputText class="form-control" @bind-Value="note.Recipe"></InputText>
+            </div>
+        </div>
+
+        <div class="form-group row mb-1">
+            <div class="col-sm-12">
+                <button class="btn btn-outline-primary" @onclick="SaveNote"> Save Note </button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+    Request note = new Request();
+    Response<object> response = new Response<object>();
+    Response<Notes> responseNote = new Response<Notes>();
+    public string Url = "https://localhost:44369/api/notes";
+
+    private async Task SaveNote()
+    {
+        if (Id != 0)
+        {
+            var response1 = await Http.PutAsJsonAsync<Request>(Url, note);
+            response = response1.Content.ReadFromJsonAsync<Response<object>>().Result;
+        }
+        else
+        {
+             var response1 = await Http.PostAsJsonAsync<object>(Url, note);
+            response = response1.Content.ReadFromJsonAsync<Response<object>>().Result;           
+        }
+        NavigationManager.NavigateTo("/Notes");
+    }
+
+    protected override async Task OnInitializedAsync() {
+
+        if (Id != 0)
+        {
+            responseNote = await Http.GetFromJsonAsync<Data.Response<Notes>>(Url + "/" + Id);
+            //note = responseNote.Data;
+        }
+    }
+}

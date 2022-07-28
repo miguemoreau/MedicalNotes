@@ -15,7 +15,7 @@ namespace MedicalNotes.Controllers
         [HttpGet]
         public IActionResult GetNotes()
         {
-            ResponseDTO response = new ResponseDTO();
+            ResponseDTO<List<Note>> response = new ResponseDTO<List<Note>>();
             try
             {
                 using (MedicalNotesContext db = new MedicalNotesContext())
@@ -29,8 +29,7 @@ namespace MedicalNotes.Controllers
             }
             catch (Exception ex)
             {
-                response.Success = false;
-                response.Data = ex;
+                response.Success = false;              
                 response.Message = ex.Message;
             }
             return Ok(response);
@@ -39,7 +38,7 @@ namespace MedicalNotes.Controllers
         [HttpGet("{Id}")]
         public IActionResult GetNote(int Id)
         {
-            ResponseDTO response = new ResponseDTO();
+            ResponseDTO<Note> response = new ResponseDTO<Note>();
             
             try
             {
@@ -63,7 +62,6 @@ namespace MedicalNotes.Controllers
             catch (Exception ex)
             {
                 response.Success = false;
-                response.Data = ex;
                 response.Message = ex.Message;
             }
             return Ok(response);
@@ -72,7 +70,7 @@ namespace MedicalNotes.Controllers
         [HttpPost]
         public IActionResult AddNotes(RequestDTO request)
         {
-            ResponseDTO response = new ResponseDTO();
+            ResponseDTO<object> response = new ResponseDTO<object>();
             try
             {
                 using (MedicalNotesContext db = new MedicalNotesContext())
@@ -106,7 +104,7 @@ namespace MedicalNotes.Controllers
         [HttpPut]
         public IActionResult EditNotes(RequestDTO request)
         {
-            ResponseDTO response = new ResponseDTO();
+            ResponseDTO<object> response = new ResponseDTO<object>();
             try
             {
                 using (MedicalNotesContext db = new MedicalNotesContext())
@@ -148,7 +146,7 @@ namespace MedicalNotes.Controllers
         [HttpDelete("{Id}")]
         public IActionResult DeleteNotes(int Id)
         {
-            ResponseDTO response = new ResponseDTO();
+            ResponseDTO<object> response = new ResponseDTO<object>();
             try
             {
                 using (MedicalNotesContext db = new MedicalNotesContext())

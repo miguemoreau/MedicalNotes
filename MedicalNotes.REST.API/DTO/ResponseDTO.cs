@@ -1,6 +1,15 @@
-﻿namespace MedicalNotes.DTO
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+
+
+
+namespace MedicalNotes.DTO
+
+
 {
-    public class ResponseDTO
+    public class ResponseDTO<T>
     {
         #region Constructors
 
@@ -14,7 +23,7 @@
 
         public bool Success { get; set; } 
         public string Message { get; set; }
-        public object Data { get; set; }
+        public T Data { get; set; }
 
         #endregion
     }
