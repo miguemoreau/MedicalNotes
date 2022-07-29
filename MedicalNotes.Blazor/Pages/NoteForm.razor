@@ -1,7 +1,6 @@
 ﻿@page "/NoteForm"
 @page "/NoteForm/{Id:int}"
-<h3>NoteForm</h3>
-
+<h3>Información de la cita.</h3>
 @using System.Collections.Generic
 @using Data
 @using System.Net.Http
@@ -10,18 +9,20 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
+
+
 <EditForm Model="@note">
     <div class="container-fluid">
 
         <div class="form-group row mb-1">
-            <label class="col-sm-3">DoctorName</label>
+            <label class="col-sm-3">Doctor Name</label>
             <div class="col-sm-9">
                 <InputText class="form-control" @bind-Value="note.DoctorName"></InputText>
             </div>
         </div>
 
         <div class="form-group row mb-1">   
-            <label class="col-sm-3">DoctorInfo</label>
+            <label class="col-sm-3">Doctor Info</label>
             <div class="col-sm-9">
                 <InputText class="form-control" @bind-Value="note.DoctorInfo"></InputText>
             </div>
@@ -42,7 +43,8 @@
 
         <div class="form-group row mb-1">
             <div class="col-sm-12">
-                <button class="btn btn-outline-primary" @onclick="SaveNote"> Save Note </button>
+                    <button class="btn btn-dark" @onclick="SaveNote"> Save Note </button>
+                    <button class="btn btn-dark" @onclick="Cancel">Cancel</button>
             </div>
         </div>
 
@@ -69,7 +71,7 @@
         }
         NavigationManager.NavigateTo("/Notes");
     }
-
+    private void Cancel() => NavigationManager.NavigateTo("/Notes");
     protected override async Task OnInitializedAsync() {
 
         if (Id != 0)

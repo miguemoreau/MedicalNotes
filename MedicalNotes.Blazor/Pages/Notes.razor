@@ -8,13 +8,13 @@
 
 <h3>Notes</h3>
 
-<div class="row">
+<div class="row" >
     <div class="col-12 text-right">
-        <a class="btn btn-outline-primary" href="NoteForm"> New Note </a>
+        <a class="btn btn-dark" href="NoteForm"> New Note </a>
     </div>
 </div>
 
-<table class="table">
+<table class="table table-dark table-hover">
 
     <tr>
         <th>Id</th>
@@ -43,8 +43,8 @@
                 <td>@(element.Diagnosis?.ToString())</td>
                 <td>@(element.Recipe?.ToString())</td>
                 <td>
-                    <a class="btn btn-outline-primary" href="/NoteForm/@(element.Id.ToString())">Edit</a> 
-                    <a class="btn btn-outline-primary" href="/NoteDeleteForm/@(element.Id.ToString())">Delete</a>
+                    <a class="btn btn-outline-light" href="/NoteForm/@(element.Id.ToString())">Edit</a> 
+                    <a class="btn btn-outline-light" href="/NoteDeleteForm/@(element.Id.ToString())">Delete</a>
                 </td>
             </tr>
         }
