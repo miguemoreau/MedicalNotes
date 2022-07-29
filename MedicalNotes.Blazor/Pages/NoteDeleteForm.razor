@@ -1,0 +1,68 @@
+﻿@page "/NoteDeleteForm"
+@page "/NoteDeleteForm/{Id:int}"
+
+
+@using System.Collections.Generic
+@using Data
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Newtonsoft.Json
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>DeleteNote</h3>
+
+<p>Are you sure you want to delete this entry (Id: @Id ) ?</p>
+
+<div>
+    <button class="btn btn-outline-primary" @onclick="Cancel">Cancel</button>
+    <button class="btn btn-outline-primary" @onclick="Delete">Delete Note</button>
+</div>
+
+
+
+
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+    Request note = new Request();
+    public string Url = "https://localhost:44369/api/notes/";
+    private async Task SaveNote()
+    {
+        if (Id != 0)
+        {
+              var b = await Http.PutAsJsonAsync<Request>(Url, note);
+        }
+        else
+        {
+            note.Date = DateTime.Now;
+            note.Reminder = true;
+            var a = await Http.PostAsJsonAsync<Request>(Url, note);
+        }
+        NavigationManager.NavigateTo("/Notes");
+    }
+
+    protected override async Task OnInitializedAsync() {
+
+        if (Id != 0)
+        {
+            ResponseUIDTO response =  await Http.GetFromJsonAsync<ResponseUIDTO>($"{Url}{Id}");
+            if (response.Success)
+            { 
+                note = JsonConvert.DeserializeObject<Request>(response.Data.ToString());
+            }
+        }
+    }
+
+
+    private void Cancel() => NavigationManager.NavigateTo("/Notes");
+
+    private async Task Delete()
+    {     
+        var response = await Http.DeleteAsync(Url+Id);
+        NavigationManager.NavigateTo("/Notes");
+    }
+
+}

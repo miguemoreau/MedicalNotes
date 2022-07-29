@@ -3,47 +3,48 @@
 @using System.Net.Http
 @using System.Net.Http.Json
 @using MedicalNotes.Blazor.Data
-@*@using MedicalNotesDTO*@
+@using Newtonsoft.Json
 @inject HttpClient Http
 
 <h3>Notes</h3>
 
 <div class="row">
     <div class="col-12 text-right">
-        <a href="NoteForm"> New Note </a>
+        <a class="btn btn-outline-primary" href="NoteForm"> New Note </a>
     </div>
 </div>
 
 <table class="table">
 
     <tr>
-                <th class="container">Id</th>   
-                <th class="container">Date</th>
-                <th class="container">Reminder</th>
-                <th class="container">DoctorName</th>
-                <th class="container">DoctorInfo</th>
-                <th class="container">Diagnosis</th>
-                <th class="container">Recipe</th>
+        <th>Id</th>
+        <th>Date</th>
+        <th>Reminder</th>
+        <th>DoctorName</th>
+        <th>DoctorInfo</th>
+        <th>Diagnosis</th>
+        <th>Recipe></th>
     </tr>
-</table>
 
-<table class="table">
 
-@if (response != null && response.Data != null)
+    @if (response != null && response.Data != null)
+
     {
-        @foreach (Notes element in response.Data )
+        var model = JsonConvert.DeserializeObject<List<Request>>(response.Data.ToString());
+
+        @foreach (Request element in model)
         {
             <tr>
-                <td>(@element).Id</td>
-                <td>(@element).Date</td>
-                <td>(@element).Reminder</td>
-                <td>(@element).DoctorName</td>
-                <td>(@element).DoctorInfo</td>
-                <td>(@element).Diagnosis</td>
-                <td>(@element).Recipe</td>  
+                <td>@(element.Id.ToString())</td>
+                <td>@(element.Date.ToString())</td>
+                <td>@(element.Reminder.ToString())</td>
+                <td>@(element.DoctorName?.ToString())</td>
+                <td>@(element.DoctorInfo?.ToString())</td>
+                <td>@(element.Diagnosis?.ToString())</td>
+                <td>@(element.Recipe?.ToString())</td>
                 <td>
-                <a href="/NoteForm/(@element).Id">Edit</a>
-                <a href="/DeleteNote/(@element).Id">Delete</a>
+                    <a class="btn btn-outline-primary" href="/NoteForm/@(element.Id.ToString())">Edit</a> 
+                    <a class="btn btn-outline-primary" href="/NoteDeleteForm/@(element.Id.ToString())">Delete</a>
                 </td>
             </tr>
         }
@@ -52,11 +53,11 @@
 
 @code {
     public string Url = "https://localhost:44369/api/notes";
-    public Data.Response<List<Notes>> response = new Data.Response<List<Notes>>();
+    public ResponseUIDTO response = new ResponseUIDTO();
 
 
     protected override async Task OnInitializedAsync() =>
-       response = await Http.GetFromJsonAsync<Data.Response<List<Notes>>>(Url);
+       response = await Http.GetFromJsonAsync<Data.ResponseUIDTO>(Url);
 
 
 }

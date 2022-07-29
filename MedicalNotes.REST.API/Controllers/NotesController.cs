@@ -15,7 +15,7 @@ namespace MedicalNotes.Controllers
         [HttpGet]
         public IActionResult GetNotes()
         {
-            ResponseDTO<List<Note>> response = new ResponseDTO<List<Note>>();
+            ResponseDTO response = new ResponseDTO();
             try
             {
                 using (MedicalNotesContext db = new MedicalNotesContext())
@@ -38,7 +38,7 @@ namespace MedicalNotes.Controllers
         [HttpGet("{Id}")]
         public IActionResult GetNote(int Id)
         {
-            ResponseDTO<Note> response = new ResponseDTO<Note>();
+            ResponseDTO response = new ResponseDTO();
             
             try
             {
@@ -70,7 +70,7 @@ namespace MedicalNotes.Controllers
         [HttpPost]
         public IActionResult AddNotes(RequestDTO request)
         {
-            ResponseDTO<object> response = new ResponseDTO<object>();
+            ResponseDTO response = new ResponseDTO();
             try
             {
                 using (MedicalNotesContext db = new MedicalNotesContext())
@@ -104,7 +104,7 @@ namespace MedicalNotes.Controllers
         [HttpPut]
         public IActionResult EditNotes(RequestDTO request)
         {
-            ResponseDTO<object> response = new ResponseDTO<object>();
+            ResponseDTO response = new ResponseDTO();
             try
             {
                 using (MedicalNotesContext db = new MedicalNotesContext())
@@ -146,7 +146,7 @@ namespace MedicalNotes.Controllers
         [HttpDelete("{Id}")]
         public IActionResult DeleteNotes(int Id)
         {
-            ResponseDTO<object> response = new ResponseDTO<object>();
+            ResponseDTO response = new ResponseDTO();
             try
             {
                 using (MedicalNotesContext db = new MedicalNotesContext())

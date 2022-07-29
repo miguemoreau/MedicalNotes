@@ -2,11 +2,11 @@
 @page "/NoteForm/{Id:int}"
 <h3>NoteForm</h3>
 
-
 @using System.Collections.Generic
 @using Data
 @using System.Net.Http
 @using System.Net.Http.Json
+@using Newtonsoft.Json
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
@@ -47,9 +47,6 @@
         </div>
 
     </div>
-
-
-
 </EditForm>
 
 @code {
@@ -57,21 +54,18 @@
     [Parameter]
     public int Id { get; set; }
     Request note = new Request();
-    Response<object> response = new Response<object>();
-    Response<Notes> responseNote = new Response<Notes>();
-    public string Url = "https://localhost:44369/api/notes";
-
+    public string Url = "https://localhost:44369/api/notes/";
     private async Task SaveNote()
     {
         if (Id != 0)
         {
-            var response1 = await Http.PutAsJsonAsync<Request>(Url, note);
-            response = response1.Content.ReadFromJsonAsync<Response<object>>().Result;
+              var b = await Http.PutAsJsonAsync<Request>(Url, note);
         }
         else
         {
-             var response1 = await Http.PostAsJsonAsync<object>(Url, note);
-            response = response1.Content.ReadFromJsonAsync<Response<object>>().Result;           
+            note.Date = DateTime.Now;
+            note.Reminder = true;
+            var a = await Http.PostAsJsonAsync<Request>(Url, note);
         }
         NavigationManager.NavigateTo("/Notes");
     }
@@ -80,8 +74,11 @@
 
         if (Id != 0)
         {
-            responseNote = await Http.GetFromJsonAsync<Data.Response<Notes>>(Url + "/" + Id);
-            //note = responseNote.Data;
+            ResponseUIDTO response =  await Http.GetFromJsonAsync<ResponseUIDTO>($"{Url}{Id}");
+            if (response.Success)
+            { 
+                note = JsonConvert.DeserializeObject<Request>(response.Data.ToString());
+            }
         }
     }
 }

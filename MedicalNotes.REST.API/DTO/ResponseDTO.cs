@@ -9,7 +9,7 @@ namespace MedicalNotes.DTO
 
 
 {
-    public class ResponseDTO<T>
+    public class ResponseDTO
     {
         #region Constructors
 
@@ -22,8 +22,8 @@ namespace MedicalNotes.DTO
         #region Properties
 
         public bool Success { get; set; } 
-        public string Message { get; set; }
-        public T Data { get; set; }
+        public string Message { get; set; } 
+        public object Data { get; set; }
 
         #endregion
     }
